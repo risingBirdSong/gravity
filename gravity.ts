@@ -76,10 +76,8 @@ class Circle {
 
     public update = () => {
         if (this.y + this.radius > window.innerHeight) {
-            this.dy = -this.dy;
-            if (gravity > 0){
-                gravity += .5;
-            }
+            this.dy = -this.dy * .8;
+            console.log(this.dy);      
         }
         else {
             this.dy += gravity;
@@ -93,7 +91,7 @@ class Circle {
 let allCircles: Circle[] = [];
 
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 200; i++) {
     allCircles.push(new Circle(clrs[Math.floor(Math.random() * clrs.length)]));
 }
 let testCircle = new Circle(clrsA[0]);
