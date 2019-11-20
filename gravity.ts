@@ -9,6 +9,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let gravity = 1;
+let friction = .80;
 
 export let mouse = {
     x: 0,
@@ -23,9 +24,17 @@ window.addEventListener("mousemove", (event) => {
 window.addEventListener("resize", ()=>{
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    init(500);
+
 })
 
+window.addEventListener("click", ()=>{
+    init(500);
+})
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 
 class Circle {
@@ -61,8 +70,8 @@ class Circle {
         this.x = Math.random() * (window.innerWidth - this.radius * 2) + this.radius;
         this.y = Math.random() * (window.innerHeight - this.radius * 2) + this.radius;
 
-        this.dx = Math.random() * 3;
-        this.dy = Math.random() * 3;
+        this.dx = (Math.random() -.5) *3;
+        this.dy = Math.random() * 20;
     }
 
     public draw = () => {
@@ -70,19 +79,26 @@ class Circle {
         this.context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         this.context.fillStyle = this.color;
         this.context.fill();
+        this.context.stroke();
         this.context.closePath();
     }
 
 
     public update = () => {
+
+        if(this.x + this.radius > window.innerWidth || this.x - this.radius < 0){
+            this.dx = -this.dx;
+        }
+
         if (this.y + this.radius > window.innerHeight) {
-            this.dy = -this.dy * .95;
+            this.dy = -this.dy * friction;
             console.log(this.dy);      
         }
         else {
             this.dy += gravity;
         }
         this.y += this.dy;
+        this.x += this.dx;
         this.draw();
     }
 }
@@ -90,12 +106,16 @@ class Circle {
 
 let allCircles: Circle[] = [];
 
+function init(amount : number){
+    allCircles = [];
+    
+    for (let i = 0; i < amount; i++) {
+        allCircles.push(new Circle(clrs[Math.floor(Math.random() * clrs.length)]));
+    }
+    let testCircle = new Circle(clrsA[0]);
+    testCircle.draw();
 
-for (let i = 0; i < 200; i++) {
-    allCircles.push(new Circle(clrs[Math.floor(Math.random() * clrs.length)]));
 }
-let testCircle = new Circle(clrsA[0]);
-testCircle.draw();
 
 function animate() {
     requestAnimationFrame(animate);
@@ -105,4 +125,4 @@ function animate() {
     }
 }
 
-animate();
+animate(); 
