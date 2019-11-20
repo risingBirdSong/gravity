@@ -8,6 +8,8 @@ const context: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRende
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let gravity = 1;
+
 export let mouse = {
     x: 0,
     y: 0
@@ -22,6 +24,8 @@ window.addEventListener("resize", ()=>{
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 })
+
+
 
 
 class Circle {
@@ -71,7 +75,16 @@ class Circle {
 
 
     public update = () => {
-
+        if (this.y + this.radius > window.innerHeight) {
+            this.dy = -this.dy;
+            if (gravity > 0){
+                gravity += .5;
+            }
+        }
+        else {
+            this.dy += gravity;
+        }
+        this.y += this.dy;
         this.draw();
     }
 }
