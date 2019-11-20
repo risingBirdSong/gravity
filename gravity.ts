@@ -76,7 +76,7 @@ class Circle {
 
     public update = () => {
         if (this.y + this.radius > window.innerHeight) {
-            this.dy = -this.dy * .8;
+            this.dy = -this.dy * .95;
             console.log(this.dy);      
         }
         else {
